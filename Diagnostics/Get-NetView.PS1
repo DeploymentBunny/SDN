@@ -30,7 +30,7 @@
 #>
 
 
-function ExecCommandPrivate {
+function ExecCommandText {
     [CmdletBinding()]
     Param(
         [parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [String] $Command, 
@@ -44,8 +44,18 @@ function ExecCommandPrivate {
     # Mirror Command to execute
     $cmdMirror = "PS " + (Convert-Path .) + "> " + $Command
     Write-Output $cmdMirror | out-file -Encoding ascii -Append $Output
+} # ExecCommandText()
 
-    # Execute Command and redirect to file.  Useful so users know what to run..
+function ExecCommandPrivate {
+    [CmdletBinding()]
+    Param(
+        [parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [String] $Command, 
+        [parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [String] $Output
+    )
+
+    ExecCommandText -Command ($Command) -Output $Output
+
+    # Execute Command and redirect to file.  Useful so users know what to run!!!
     Invoke-Expression $Command | Out-File -Encoding ascii -Append $Output
 } #ExecCommandPrivate()
 
@@ -346,8 +356,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapter.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapter -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapter -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapter -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapter -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapter | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -365,8 +375,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterBinding.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterBinding -Name ""$name"" -AllBindings | Sort-Object ComponentID | Out-String -Width $columns",
-                            "Get-NetAdapterBinding -Name ""$name"" -AllBindings | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterBinding -Name ""$name"" -AllBindings -IncludeHidden | Sort-Object ComponentID | Out-String -Width $columns",
+                            "Get-NetAdapterBinding -Name ""$name"" -AllBindings -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterBinding | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -374,8 +384,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterChecksumOffload.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterChecksumOffload -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterChecksumOffload -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterChecksumOffload -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterChecksumOffload -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterChecksumOffload | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -383,8 +393,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterLso.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterLso -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterLso -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterLso -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterLso -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterLso | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -392,8 +402,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterRss.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterRss -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterRss -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterRss -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterRss -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterRss | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -401,8 +411,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterStatistics.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterStatistics -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterStatistics -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterStatistics -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterStatistics -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterStatistics | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -410,8 +420,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterEncapsulatedPacketTaskOffload.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterEncapsulatedPacketTaskOffload -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterEncapsulatedPacketTaskOffload -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterEncapsulatedPacketTaskOffload -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterEncapsulatedPacketTaskOffload -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterEncapsulatedPacketTaskOffload | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -419,8 +429,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterHardwareInfo.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterHardwareInfo -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterHardwareInfo -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterHardwareInfo -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterHardwareInfo -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterHardwareInfo | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -428,8 +438,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterIPsecOffload.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterIPsecOffload -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterIPsecOffload -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterIPsecOffload -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterIPsecOffload -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterIPsecOffload | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -437,8 +447,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterPowerManagment.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterPowerManagment -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterPowerManagment -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterPowerManagment -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterPowerManagment -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterPowerManagment | Get-Member"
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -446,8 +456,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterQos.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterQos -Name ""$name"" -ErrorAction SilentlyContinue | Out-String -Width $columns",
-                            "Get-NetAdapterQos -Name ""$name"" -ErrorAction SilentlyContinue | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterQos -Name ""$name"" -IncludeHidden -ErrorAction SilentlyContinue | Out-String -Width $columns",
+                            "Get-NetAdapterQos -Name ""$name"" -IncludeHidden -ErrorAction SilentlyContinue | Format-List  -Property *",
                             "Get-NetAdapterQos | Get-Member"                            
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -455,8 +465,8 @@ function NetAdapterWorker {
         
         $file = "Get-NetAdapterRdma.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterRdma -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterRdma -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterRdma -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterRdma -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterRdma | Get-Member"                                                        
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -464,8 +474,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterPacketDirect.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterPacketDirect -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterPacketDirect -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterPacketDirect -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterPacketDirect -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterPacketDirect | Get-Member"                            
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -473,8 +483,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterRsc.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterRsc -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterRsc -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterRsc -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterRsc -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterRsc | Get-Member" 
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -482,8 +492,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterSriov.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterSriov -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterSriov -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterSriov -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterSriov -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterSriov | Get-Member" 
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -491,8 +501,8 @@ function NetAdapterWorker {
         
         $file = "Get-NetAdapterSriovVf.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterSriovVf -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterSriovVf -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterSriovVf -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterSriovVf -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterSriovVf | Get-Member" 
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -500,8 +510,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterVmq.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterVmq -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterVmq -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterVmq -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterVmq -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterVmq | Get-Member" 
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -509,8 +519,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterVmqQueue.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterVmqQueue -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterVmqQueue -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterVmqQueue -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterVmqQueue -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterVmqQueue | Get-Member" 
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -518,8 +528,8 @@ function NetAdapterWorker {
 
         $file = "Get-NetAdapterVPort.txt"
         $out  = (Join-Path -Path $dir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapterVPort -Name ""$name"" | Out-String -Width $columns",
-                            "Get-NetAdapterVPort -Name ""$name"" | Format-List  -Property *",
+        [String []] $cmds = "Get-NetAdapterVPort -Name ""$name"" -IncludeHidden | Out-String -Width $columns",
+                            "Get-NetAdapterVPort -Name ""$name"" -IncludeHidden | Format-List  -Property *",
                             "Get-NetAdapterVPort | Get-Member" 
         ForEach($cmd in $cmds) {
             ExecCommand -Command ($cmd) -Output $out
@@ -1102,12 +1112,75 @@ function VMSwitchWorker {
     #>
 } # VMSwitchWorker()
 
+function VfpExtensionWorker {
+    [CmdletBinding()]
+    Param(
+        [parameter(Mandatory=$true)] [String] $VMSwitchName,
+        [parameter(Mandatory=$true)] [String] $OutDir
+    )
+
+    $name = $VMSwitchName
+    $out  = $OutDir
+
+    $dir  = (Join-Path -Path $out -ChildPath ("VFP"))
+    New-Item -ItemType directory -Path $dir | Out-Null
+
+    $file = "VfpCtrl.help.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "vfpctrl.exe /h"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command ($cmd) -Output $out
+    }
+
+
+    $switches = Get-WmiObject -Namespace root\virtualization\v2 -Class Msvm_VirtualEthernetSwitch
+    foreach ($switch in $switches) {
+        if ($switch.ElementName -eq $name) {
+            $currswitch = $switch
+            break
+        }
+    }
+    $ports = $currswitch.GetRelated("Msvm_EthernetSwitchPort", "Msvm_SystemDevice", $null, $null, $null, $null, $false, $null)
+    foreach ($port in $ports) {
+        $portGuid = $port.Name
+        $file     = "VfpCtrl.PortGuid.$portGuid.txt"
+        $out      = (Join-Path -Path $dir -ChildPath $file)
+        [String []] $cmds = "vfpctrl.exe /list-space /port $portGuid",
+                            "vfpctrl.exe /list-mapping /port $portGuid",
+                            "vfpctrl.exe /list-rule /port $portGuid",
+                            "vfpctrl.exe /port $portGuid /get-port-state"
+        ForEach($cmd in $cmds) {
+            ExecCommand -Command ($cmd) -Output $out
+        }
+    }
+
+} # VfpExtensionWorker()
+
+function VfpExtensionDetail {
+    [CmdletBinding()]
+    Param(
+        [parameter(Mandatory=$true)] [String] $VMSwitchName,
+        [parameter(Mandatory=$true)] [String] $OutDir
+    )
+
+    $name = $VMSwitchName
+    $out  = $OutDir
+
+    ForEach($ext in (Get-VMSwitch -Name $name | Get-VMSwitchExtension)) {
+        if (($ext.Name -like "Microsoft Azure VFP Switch Extension") -and ($ext.Enabled -like "True")) {
+            VfpExtensionWorker -VMSwitchName $name -OutDir $out
+        }
+    }
+
+} # VfpExtensionDetail()
+
 function VMSwitchDetail {
     [CmdletBinding()]
     Param(
         [parameter(Mandatory=$true)] [String] $OutDir
     )
 
+    # FIXME!!!
     ##See this command to get VFs on vSwitch
     #Get-NetAdapterSriovVf -SwitchId 2
 
@@ -1120,6 +1193,7 @@ function VMSwitchDetail {
         
         Write-Host "Processing: $name"
         Write-Host "----------------------------------------------"
+        VfpExtensionDetail    -VMSwitchName $name -OutDir $dir
         VMSwitchWorker        -VMSwitchName $name -OutDir $dir
         ProtocolNicDetail     -VMSwitchName $name -OutDir $dir
         HostVNicDetail        -VMSwitchName $name -OutDir $dir
@@ -1151,8 +1225,16 @@ function NetworkSummary {
 
     $file = "Get-NetAdapter.txt"
     $out  = (Join-Path -Path $OutDir -ChildPath $file)
-        [String []] $cmds = "Get-NetAdapter | Sort-Object InterfaceDescription",
-                            "Get-NetAdapter | Format-Table -Property * -AutoSize | Sort-Object InterfaceDescription | Out-String -Width $columns"
+        [String []] $cmds = "Get-NetAdapter -includeHidden | Sort-Object InterfaceDescription",
+                            "Get-NetAdapter -includeHidden | Format-Table -Property * -AutoSize | Sort-Object InterfaceDescription | Out-String -Width $columns"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    }
+
+    $file = "Get-NetAdapterStatistics.txt"
+    $out  = (Join-Path -Path $OutDir -ChildPath $file)
+        [String []] $cmds = "Get-NetAdapterStatistics -includeHidden | Format-Table -Autosize | Sort-Object InterfaceDescription | Out-String -Width $columns",
+                            "Get-NetAdapterStatistics -includeHidden | Format-Table * -Autosize | Sort-Object InterfaceDescription | Out-String -Width $columns"
     ForEach($cmd in $cmds) {
         ExecCommand -Command $cmd -Output $out
     }
@@ -1167,8 +1249,16 @@ function NetworkSummary {
 
     $file = "Get-NetIpAddress.txt"
     $out  = (Join-Path -Path $OutDir -ChildPath $file)
-        [String []] $cmds = "Get-NetIpAddress | ft",
+        [String []] $cmds = "Get-NetIpAddress | Format-Table -Autosize",
                             "Get-NetIpAddress | Format-Table -Property * -AutoSize | Out-String -Width $columns"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    }
+
+    $file = "ipconfig.txt"
+    $out  = (Join-Path -Path $OutDir -ChildPath $file)
+        [String []] $cmds = "ipconfig",
+                            "ipconfig /allcompartments /all"
     ForEach($cmd in $cmds) {
         ExecCommand -Command $cmd -Output $out
     }
@@ -1282,27 +1372,58 @@ function NetshTrace {
     $dir    = (Join-Path -Path $OutDir -ChildPath ("Netsh"))
     New-Item -ItemType directory -Path $dir | Out-Null
 
+    <# Deprecated / DELETEME
+        #Figure out how to get this netsh rundown command executing under Powershell with logging...
+        $ndiswpp = "{DD7A21E6-A651-46D4-B7C2-66543067B869}"
+        $vmswpp  = "{1F387CBC-6818-4530-9DB6-5F1058CD7E86}"
+        netsh trace start provider=$vmswpp level=1 keywords=0x00010000 provider=$ndiswpp level=1 keywords=0x02 correlation=disabled report=disabled overwrite=yes tracefile=$dir\NetRundown.etl
+        netsh trace stop
+    #>
+   
+    #$wpp_vswitch  = "{1F387CBC-6818-4530-9DB6-5F1058CD7E86}"
+    #$wpp_ndis     = "{DD7A21E6-A651-46D4-B7C2-66543067B869}"
+    $file = "NetRundown.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "New-NetEventSession    NetRundown -CaptureMode SaveToFile -LocalFilePath $dir\NetRundown.etl",
+                        "Add-NetEventProvider   ""{1F387CBC-6818-4530-9DB6-5F1058CD7E86}"" -SessionName NetRundown -Level 1 -MatchAnyKeyword 0x10000",
+                        "Add-NetEventProvider   ""{DD7A21E6-A651-46D4-B7C2-66543067B869}"" -SessionName NetRundown -Level 1 -MatchAnyKeyword 0x2",
+                        "Start-NetEventSession  NetRundown",
+                        "Stop-NetEventSession   NetRundown",
+                        "Remove-NetEventSession NetRundown"
+    ForEach($cmd in $cmds) {
+        ExecCommandTrusted -Command $cmd -Output $out
+    } 
+
+    #
+    # The ETL file can be converted to text using the following command:
+    #   “netsh trace convert NetRundown.etl tmfpath=\\winbuilds\release\RS_ONECORE_STACK_SDN_DEV1\15014.1001.170117-1700\amd64fre\symbols.pri\TraceFormat”
+    #    Specifying a path to the TMF symbols. Output is attached.
+
+    $file = "NetshDump.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "netsh dump"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    }  
+
+    $file = "NetshStatistics.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "netsh interface ipv4 show icmpstats",
+                        "netsh interface ipv4 show ipstats",
+                        "netsh interface ipv4 show tcpstats",
+                        "netsh interface ipv4 show udpstats",
+                        "netsh interface ipv6 show ipstats",
+                        "netsh interface ipv6 show tcpstats",
+                        "netsh interface ipv6 show udpstats"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    }  
+
     #NetSetup, binding map, setupact logs amongst other things needed by NDIS folks.
     Write-Host "`n"
     Write-Host "Processing..."
     $file = "NetshTrace.txt"
     $out  = (Join-Path -Path $dir -ChildPath $file)
-    
-    # Figure out how to get this netsh rundown command executing under Powershell with logging...
-        $ndiswpp = "{DD7A21E6-A651-46D4-B7C2-66543067B869}"
-        $vmswpp  = "{1F387CBC-6818-4530-9DB6-5F1058CD7E86}"
-        netsh trace start provider=$vmswpp level=1 keywords=0x00010000 provider=$ndiswpp level=1 keywords=0x02 correlation=disabled report=disabled overwrite=yes tracefile=$dir\NetRundown.etl
-        netsh trace stop
-    
-    <# Replace above with these steps:
-        New-NetEventSession NetRundown -CaptureMode SaveToFile -LocalFilePath C:\NetRundown.etl  
-        Add-NetEventProvider "{1F387CBC-6818-4530-9DB6-5F1058CD7E86}" -SessionName NetRundown -Level 1 -MatchAnyKeyword 0x10000
-        Add-NetEventProvider "{DD7A21E6-A651-46D4-B7C2-66543067B869}" -SessionName NetRundown -Level 1 -MatchAnyKeyword 0x2
-        Start-NetEventSession NetRundown
-        Stop-NetEventSession NetRundown
-        Remove-NetEventSession NetRundown
-    #>
-
     [String []] $cmds = "netsh -?",
                         "netsh trace show scenarios",
                         "netsh trace show providers",
@@ -1311,6 +1432,91 @@ function NetshTrace {
         ExecCommand -Command $cmd -Output $out
     }   
 } # NetshTrace()
+
+function Counters {
+    [CmdletBinding()]
+    Param(
+        [parameter(Mandatory=$true)] [String] $OutDir
+    )
+
+    $dir    = (Join-Path -Path $OutDir -ChildPath ("Counters"))
+    New-Item -ItemType directory -Path $dir | Out-Null
+
+    $file = "CounterSetName.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "Get-Counter -ListSet * | Sort-Object CounterSetName | Select-Object CounterSetName | Out-String -Width $columns"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    } 
+
+    $file = "CounterSetName.paths.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "(Get-Counter -ListSet * | Sort-Object CounterSetName).paths | Out-String -Width $columns"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    }  
+
+    $file = "CounterSetName.pathswithinstances.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "(Get-Counter -ListSet * | Sort-Object CounterSetName).pathswithinstances | Out-String -Width $columns"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    }  
+
+    $file = "CounterSet.Property.txt"
+    $out  = (Join-Path -Path $dir -ChildPath $file)
+    [String []] $cmds = "(Get-Counter -ListSet * | Sort-Object CounterSetName) | Format-List -Property * | Out-String -Width $columns",
+                        "(Get-Counter -ListSet * | Sort-Object CounterSetName) | Format-Table -Property * | Out-String -Width $columns"
+    ForEach($cmd in $cmds) {
+        ExecCommand -Command $cmd -Output $out
+    } 
+
+    # Perf Counters of interest
+    $cntlist = @(
+            "*Hyper*"
+            "*ip*",
+            "*udp*",
+            "*tcp*",
+            "*icmp*",
+            "ip",
+            "*nat*",
+            "*network*",
+            "*rdma*",
+            "*smb*",
+            "*wfp*"
+    )
+    $dir    = (Join-Path -Path $dir -ChildPath ("Detail"))
+    New-Item -ItemType directory -Path $dir | Out-Null
+    foreach($cnt in (Get-Counter -ListSet * | Sort-Object CounterSetName)) {
+        foreach ($elem in $cntlist) {
+            if ($cnt.CounterSetName -like $elem) {
+                $tmp  = $cnt.CounterSetName
+                $file = "$tmp.txt" 
+                $out  = (Join-Path -Path $dir -ChildPath $file)
+
+                Get-Counter -Counter $cnt.Paths | Out-File $out
+                Get-Counter -Counter $cnt.Paths | Export-Counter -Path $dir\"$tmp.blg" -FileFormat BLG -Force
+                
+                # Counter matched and captured, Move on to next to avoid duplicate work
+                break
+            }
+        }
+    }
+} # Counters()
+
+function HwErrorReport {
+    [CmdletBinding()]
+    Param(
+        [parameter(Mandatory=$true)] [String] $OutDir
+    )
+
+    $file = "WER.txt"
+    $out  = (Join-Path -Path $OutDir -ChildPath $file)
+    [String []] $cmds = "copy-item C:\ProgramData\Microsoft\Windows\WER $outdir -recurse -verbose 4>&1"
+    ForEach($cmd in $cmds) {
+        ExecCommandTrusted -Command ($cmd) -Output $out
+    }
+} # HwErrorReport()
 
 function Environment {
     [CmdletBinding()]
@@ -1366,7 +1572,38 @@ function CreateZip {
 
     add-Type -assembly "system.io.compression.filesystem"
     [io.compression.zipfile]::CreateFromDirectory($Src, $out)
+
+    $zip  = (Get-ChildItem $out -recurse | Measure-Object -property length -sum)
+    $zipbytes = "{0:N2}" -f ($zip.sum / 1MB) + " MB"
+
+    Write-Host "$out"
+    Write-Host "Size:   $zipbytes"
+
 } # CreateZip()
+
+function Completion {
+    [CmdletBinding()]
+    Param(
+        [parameter(Mandatory=$true)] [String] $Src,
+        [parameter(Mandatory=$true)] [String] $Dest,
+        [parameter(Mandatory=$true)] [String] $ZipName
+    )
+    
+    # Calculate sizes
+    $dirs     = (Get-ChildItem $src -recurse | Measure-Object -property length -sum)
+    $dirssize = "{0:N2}" -f ($dirs.sum / 1MB) + " MB"
+
+    # Display file save location
+    
+    Write-Host "`n`n"
+    Write-Host "Diagnostics Data:"
+    Write-Host "-----------------"
+    CreateZip -Src $Src -Dest $Dest -ZipName $ZipName 
+    Write-Host "`n$Src"
+    Write-Host "Size:   $dirssize"
+    Write-Host "Dirs:  "(Get-ChildItem $Src -Directory -Recurse | Measure-Object | %{$_.Count})
+    Write-Host "Files: "(Get-ChildItem $Src -File -Recurse | Measure-Object | %{$_.Count})
+} # Completion
 
 function Worker {
     clear
@@ -1380,30 +1617,36 @@ function Worker {
     EnvDestroy        -OutDir $workDir
     EnvCreate         -OutDir $workDir
 
-    Environment                 -OutDir $workDir
-    NetworkSummary              -OutDir $workDir
-    VMSwitchDetail              -OutDir $workDir  
-    LbfoDetail                  -OutDir $workDir
-    NativeNicDetail             -OutDir $workDir
-    QosDetail                   -OutDir $workDir
-    NetIp                       -OutDir $workDir
-    ServicesDrivers             -OutDir $workDir
-    NetshTrace                  -OutDir $workDir
-
-    CreateZip -Src $workDir -Dest $baseDir -ZipName $workDirPrefix
-
+    Environment       -OutDir $workDir
+    NetworkSummary    -OutDir $workDir
+    
+    HwErrorReport     -OutDir $workDir
+    VMSwitchDetail    -OutDir $workDir  
+    LbfoDetail        -OutDir $workDir
+    NativeNicDetail   -OutDir $workDir
+    QosDetail         -OutDir $workDir
+    NetIp             -OutDir $workDir
+    ServicesDrivers   -OutDir $workDir
+    NetshTrace        -OutDir $workDir
+    Counters          -OutDir $workDir
+        
+    Completion -Src $workDir -Dest $baseDir -ZipName $workDirPrefix
+    
     # Feature request list.
-    # Remote powershell support
-    # Cluster member execution support via remote powershell
+    # Get-WinEvent and system logs: https://technet.microsoft.com/en-us/library/dd367894.aspx?f=255&MSPPError=-2147217396
     #
-    # FIXME!!!  SDN uses PA NIC in non-default compartments.  The Get-NetAdapter* cmdlets need to be updated to
-    #          operate on the -includeHidden parameter and validated in an SDN setup.
-    # 
-    #PerfCounters                -OutDir $workDir
-    #SMBDetail                   -OutDir $workDir
+    # - Convert NetSH to NetEvent PS calls.
+    # - Perf Profile acqusition
+    # - non-default compartment support
+    # - Remote powershell support
+    # - Cluster member execution support via remote powershell
+    #
+    # See this command to get VFs on vSwitch - see text in above functions
+    # Get-NetAdapterSriovVf -SwitchId 2
+
 } # Worker()
 
 function Main {
     # If it moves, measure it.  We should know how long this takes...
-    Measure-Command { Worker }
+    Measure-Command {Worker} | select @{n="Execution Time:";e={$_.Minutes,"Min",$_.Seconds,"Sec" -join " "}}
 } Main #Entry Point
